@@ -41,7 +41,8 @@ class Arbitro:
 
     @staticmethod
     def inicia_jugada():
-        print("se inician las ronda")
+        Arbitro.partida.inicia_contador_rondas()
+        print("se inician las rondas")
         print()
 
         # repartir cartas a los jugadores
@@ -49,6 +50,7 @@ class Arbitro:
         lista_jugadores = Arbitro.partida.get_lista_jugadores()
         for jugador in lista_jugadores:
             ronda = cls_ronda.Ronda()
+            # TODO Que no se repitan las cartas :-D
             for i in range(0, 3):
                 carta = Arbitro.baraja.get_carta_aleatoria()
                 estado = cls_estados_carta.Estados.EN_MANO
@@ -60,6 +62,7 @@ class Arbitro:
 
         pass
 
+    # Se trata de el envite entre dos cartas
     @staticmethod
     def inicia_ronda():
         # TODO hay que poner un contador de ronda actual
@@ -70,10 +73,10 @@ class Arbitro:
         lista_jugadores: list[cls_jugador.Jugador]
         lista_jugadores = Arbitro.partida.get_lista_jugadores()
         Arbitro.set_jugador_en_turno(lista_jugadores[0], 0)
-        #print(f'jugador primero: {Arbitro.get_jugador_en_turno().get_nombre()}')
+        # print(f'jugador primero: {Arbitro.get_jugador_en_turno().get_nombre()}')
 
         # enviar mensaje al jugador en turno de que juegue
-        Arbitro.jugador_en_turno.juega()
+        Arbitro.jugador_en_turno.juega(Arbitro.partida.get_ronda_actual())
 
     # el jugador avisa al arbitro de la decision y/o carta jugada
     @staticmethod
@@ -98,7 +101,8 @@ class Arbitro:
                 Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
                 Arbitro.set_jugador_en_turno(
                     lista_jugadores[Arbitro.indice_jugador_en_turno], Arbitro.indice_jugador_en_turno)
-                Arbitro.jugador_en_turno.juega()
+                Arbitro.jugador_en_turno.juega(
+                    Arbitro.partida.get_ronda_actual())
 
         # solo se puede envidar en la primera ronda
         # TODO poner un contador de puntos de envido y otro de truc
@@ -112,7 +116,7 @@ class Arbitro:
         elif decision == cls_decision.Decisiones.ME_VOY:
             pass
 
-    @staticmethod
+    @ staticmethod
     def evalua_jugada():
         rondas: list[cls_ronda.Ronda]
         rondas = Arbitro.partida.get_cartas_ronda()
@@ -174,6 +178,6 @@ class Arbitro:
         else:
             Arbitro.inicia_ronda()
 
-    @staticmethod
+    @ staticmethod
     def finaliza_partida():
         pass

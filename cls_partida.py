@@ -10,12 +10,14 @@ class Partida:
     id: int
     tablero: cls_tablero.Tablero
     marcador: cls_marcador.Marcador
+    ronda_actual: int
 
     @staticmethod
     def inicializa(tablero: cls_tablero.Tablero, marcador: cls_marcador.Marcador):
         Partida.id = 0  # provisional
         Partida.tablero = tablero
         Partida.marcador = marcador
+        Partida.ronda_actual = 0
 
     # devuelve True si la partida esta completa.
     @staticmethod
@@ -28,7 +30,16 @@ class Partida:
 
     @staticmethod
     def inicializa_ronda():
+        Partida.ronda_actual = Partida.ronda_actual + 1
         Partida.tablero.inicializa_ronda()
+
+    @staticmethod
+    def inicia_contador_rondas():
+        Partida.ronda_actual = 0
+
+    @staticmethod
+    def get_ronda_actual():
+        return Partida.ronda_actual
 
     @staticmethod
     def inicializa_ronda_ganada():

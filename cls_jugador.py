@@ -36,7 +36,8 @@ class Jugador:
         return self.ordinal
 
     # En esta funcion se debe de implementar la inteligencia del jugador
-    def juega(self):
+    def juega(self, ronda):
+        print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')
         decision = Decisiones.USO_CARTA
         carta_a_enviar = None
         for carta in self.ronda.get_cartas():
