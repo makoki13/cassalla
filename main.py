@@ -3,7 +3,7 @@
 # import cls_baraja_safor
 # import cls_carta_en_juego
 # import cls_estados_carta
-# import cls_mano
+# import cls_ronda
 # import cls_tablero
 # import cls_usuario
 # import cls_jugador

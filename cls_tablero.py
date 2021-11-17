@@ -1,10 +1,10 @@
 
-import cls_mano
+import cls_ronda
 
 
 class Tablero:
-    manos = []
-    manos_ganadas = []
+    rondas = []
+    rondas_ganadas = []
     num_jugadores: int
 
     @staticmethod
@@ -12,35 +12,35 @@ class Tablero:
         Tablero.num_jugadores = num_jugadores
 
     @staticmethod
-    def inicializa_mano():
-        Tablero.manos = []
+    def inicializa_ronda():
+        Tablero.rondas = []
 
     @staticmethod
-    def add_mano(mano: cls_mano.Mano):
-        if (len(Tablero.manos) == Tablero.num_jugadores):
+    def add_ronda(ronda: cls_ronda.Ronda):
+        if (len(Tablero.rondas) == Tablero.num_jugadores):
             return
-        Tablero.manos.append(mano)
+        Tablero.rondas.append(ronda)
 
     @staticmethod
-    def get_mano():
-        return Tablero.manos
+    def get_ronda():
+        return Tablero.rondas
 
     @staticmethod
-    def print_mano(indice: int):
-        Tablero.manos[indice].test()
+    def print_ronda(indice: int):
+        Tablero.rondas[indice].test()
 
     @staticmethod
-    def inicializa_mano_ganada():
-        Tablero.manos_ganadas = []
+    def inicializa_ronda_ganada():
+        Tablero.rondas_ganadas = []
 
     @staticmethod
-    def add_mano_ganada(indice: int):
-        Tablero.manos_ganadas.append(indice)
+    def add_ronda_ganada(indice: int):
+        Tablero.rondas_ganadas.append(indice)
 
     @staticmethod
-    def get_num_manos_ganadas(indice: int):
+    def get_num_rondas_ganadas(indice: int):
         ganadas = 0
-        for mano in Tablero.manos_ganadas:
-            if mano == indice:
+        for ronda in Tablero.rondas_ganadas:
+            if ronda == indice:
                 ganadas = ganadas + 1
         return ganadas

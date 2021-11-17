@@ -3,7 +3,7 @@ import cls_arbitro
 import cls_tablero
 import cls_marcador
 import cls_jugador
-import cls_mano
+import cls_ronda
 
 
 class Partida:
@@ -27,32 +27,32 @@ class Partida:
         return Partida.marcador.get_lista_jugadores()
 
     @staticmethod
-    def inicializa_mano():
-        Partida.tablero.inicializa_mano()
+    def inicializa_ronda():
+        Partida.tablero.inicializa_ronda()
 
     @staticmethod
-    def inicializa_mano_ganada():
-        Partida.tablero.inicializa_mano_ganada()
+    def inicializa_ronda_ganada():
+        Partida.tablero.inicializa_ronda_ganada()
 
     @staticmethod
-    def add_mano(mano: cls_mano.Mano):
-        Partida.tablero.add_mano(mano)
+    def add_ronda(ronda: cls_ronda.Ronda):
+        Partida.tablero.add_ronda(ronda)
 
     @staticmethod
-    def get_cartas_mano():
-        return Partida.tablero.get_mano()
+    def get_cartas_ronda():
+        return Partida.tablero.get_ronda()
 
     @staticmethod
-    def add_mano_ganada(indice: int):
-        Partida.tablero.add_mano_ganada(indice)
+    def add_ronda_ganada(indice: int):
+        Partida.tablero.add_ronda_ganada(indice)
 
     @staticmethod
     def add_puntos(jugador: cls_jugador.Jugador, puntos: int):
         Partida.marcador.add_puntos(jugador, puntos)
 
     @staticmethod
-    def get_num_manos_ganadas(indice: int):
-        return Partida.tablero.get_num_manos_ganadas(indice)
+    def get_num_rondas_ganadas(indice: int):
+        return Partida.tablero.get_num_rondas_ganadas(indice)
 
     @staticmethod
     def get_ganador():

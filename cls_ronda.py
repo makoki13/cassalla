@@ -1,7 +1,7 @@
 import cls_carta_en_juego
 
 
-class Mano:
+class Ronda:
     def __init__(self):
         self.cartas: list[cls_carta_en_juego.Carta_en_juego] = []
 
