@@ -4,7 +4,9 @@ import cls_palo
 
 
 class Baraja_safor(cls_baraja.Baraja):
-    def inicializa(self):
+    def __init__(self):
+        super().__init__()
+
         self.add_carta(cls_carta.Carta(
             1, cls_palo.Palos.ESPADAS, 'as de espadas', 14))
 

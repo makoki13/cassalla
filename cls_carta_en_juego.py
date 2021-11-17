@@ -7,5 +7,5 @@ class Carta_en_juego:
         self.carta = carta
         self.estado = estado
 
-    def test(self):
+    def print_carta(self):
         print(f'<Test carta:{self.carta.get_nombre()} estado:{self.estado}')

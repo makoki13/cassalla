@@ -10,3 +10,6 @@ class Carta:
 
     def get_nombre(self):
         return self.nombre
+
+    def get_valor(self):
+        return self.valor

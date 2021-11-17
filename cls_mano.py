@@ -8,6 +8,5 @@ class Mano:
     def add_carta(self, carta: cls_carta_en_juego.Carta_en_juego):
         self.cartas.append(carta)
 
-    def test(self):
-        for carta in self.cartas:
-            print(carta.get_nombre())
+    def get_cartas(self):
+        return self.cartas
