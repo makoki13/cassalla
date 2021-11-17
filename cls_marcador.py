@@ -7,7 +7,7 @@ class Marcador:
     num_jugadores: int
     num_piedras_para_ganar: int
     jugadores = []
-    mano_actual = []
+    ronda_actual = []
 
     @staticmethod
     def inicializa(num_jugadores: int, piedras_por_cama: int, numero_camas: int):
@@ -29,8 +29,8 @@ class Marcador:
         return Marcador.jugadores
 
     @staticmethod
-    def add_mano(indice: int):
-        Marcador.mano_actual.append(indice)
+    def add_ronda(indice: int):
+        Marcador.ronda_actual.append(indice)
 
     @staticmethod
     def add_puntos(jugador: cls_jugador.Jugador, puntos: int):
