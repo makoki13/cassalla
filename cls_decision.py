@@ -9,6 +9,7 @@ class Decisiones(Enum):
     LA_FALTA_ENVIDO = 4
     TRUQUE = 5
     QUIERO = 10
+    SIN_DECISION = -1
 
     def test():
         for estado in Decisiones:
