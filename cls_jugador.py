@@ -1,9 +1,9 @@
-
-from cls_decision import Decisiones
+from cls_decision import Decisiones, Decision
 import cls_usuario
 import cls_ronda
-import cls_arbitro
+#import cls_arbitro
 import cls_estados_carta
+import lista_estrategias
 
 
 class Jugador:
@@ -12,6 +12,7 @@ class Jugador:
         self.ordinal = ordinal
         self.ronda = None
         self.puntos = 0
+        self.estrategia = lista_estrategias.get_estrategia_a_reu()
 
     def add_ronda(self, ronda: cls_ronda.Ronda):
         self.ronda = ronda
@@ -36,8 +37,12 @@ class Jugador:
         return self.ordinal
 
     # En esta funcion se debe de implementar la inteligencia del jugador
-    def juega(self, ronda):
-        print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')
+    def juega(self, ronda, tipo_envido: Decisiones, tipo_truc: Decisiones):
+        #print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')
+        if (ronda == 1):
+            # evaluamos la ronda
+            self.estrategia.analiza_envido(tipo_envido)
+            pass
         decision = Decisiones.USO_CARTA
         carta_a_enviar = None
         for carta in self.ronda.get_cartas():
@@ -45,7 +50,9 @@ class Jugador:
                 carta_a_enviar = carta
                 carta.estado = cls_estados_carta.Estados.EN_TABLERO
                 break
-        cls_arbitro.Arbitro.recoge_decision(decision, carta_a_enviar.carta)
+
+        return Decision(decision, carta_a_enviar.carta)
+        #cls_arbitro.Arbitro.recoge_decision(decision, carta_a_enviar.carta)
 
     def juego_erroneo(self):
         pass

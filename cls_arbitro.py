@@ -2,7 +2,7 @@
 import cls_jugador
 import cls_partida
 import cls_carta
-import cls_decision
+from cls_decision import Decisiones, Decision
 import cls_baraja_safor
 import cls_ronda
 import cls_estados_carta
@@ -65,6 +65,7 @@ class Arbitro:
     # Se trata de el envite entre dos cartas
     @staticmethod
     def inicia_ronda():
+        decision_tomada: Decision
         # TODO hay que poner un contador de ronda actual
 
         Arbitro.partida.inicializa_ronda()
@@ -75,18 +76,21 @@ class Arbitro:
         Arbitro.set_jugador_en_turno(lista_jugadores[0], 0)
         # print(f'jugador primero: {Arbitro.get_jugador_en_turno().get_nombre()}')
 
-        # enviar mensaje al jugador en turno de que juegue
-        Arbitro.jugador_en_turno.juega(Arbitro.partida.get_ronda_actual())
+        # enviar mensaje al jugador en turno de que juegue. El envido es din decision y el truco idem
+        decision_tomada = Arbitro.jugador_en_turno.juega(
+            Arbitro.partida.get_ronda_actual(), Decisiones.SIN_DECISION, Decisiones.SIN_DECISION)
+        Arbitro.recoge_decision(
+            decision_tomada.decision, decision_tomada.carta)
 
     # el jugador avisa al arbitro de la decision y/o carta jugada
     @staticmethod
-    def recoge_decision(decision: cls_decision.Decisiones, carta: cls_carta):
-        print(f'juega {Arbitro.jugador_en_turno.get_nombre()}')
-        print(decision)
-        print()
+    def recoge_decision(decision: Decisiones, carta: cls_carta):
+        #print(f'juega {Arbitro.jugador_en_turno.get_nombre()}')
+        # print(decision)
+        # print()
 
-        if (decision == cls_decision.Decisiones.USO_CARTA):
-            print(carta.get_nombre())
+        if (decision == Decisiones.USO_CARTA):
+            print(f'{Arbitro.jugador_en_turno.get_nombre()} usa {carta.get_nombre()}')
             ronda = cls_ronda.Ronda()
             estado = cls_estados_carta.Estados.EN_TABLERO
             ronda.add_carta(cls_carta_en_juego.Carta_en_juego(carta, estado))
@@ -101,19 +105,22 @@ class Arbitro:
                 Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
                 Arbitro.set_jugador_en_turno(
                     lista_jugadores[Arbitro.indice_jugador_en_turno], Arbitro.indice_jugador_en_turno)
-                Arbitro.jugador_en_turno.juega(
+                # TODO hay que enviar el estado del truc y del envido. Implementar sendas funciones en clase Partida
+                decision_tomada = Arbitro.jugador_en_turno.juega(
                     Arbitro.partida.get_ronda_actual())
+                Arbitro.recoge_decision(
+                    decision_tomada.decision, decision_tomada.carta)
 
         # solo se puede envidar en la primera ronda
         # TODO poner un contador de puntos de envido y otro de truc
-        elif decision == cls_decision.Decisiones.ENVIDO:
+        elif decision == Decisiones.ENVIDO:
             pass
 
-        elif decision == cls_decision.Decisiones.QUIERO:
+        elif decision == Decisiones.QUIERO:
             pass
 
         # asignamos los puntos en juego al otro jugador
-        elif decision == cls_decision.Decisiones.ME_VOY:
+        elif decision == Decisiones.ME_VOY:
             pass
 
     @ staticmethod

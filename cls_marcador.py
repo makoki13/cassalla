@@ -1,4 +1,4 @@
-import cls_jugador
+from cls_jugador import Jugador
 
 
 class Marcador:
@@ -18,7 +18,7 @@ class Marcador:
 
     # devuelve True si la partida esta completa.
     @staticmethod
-    def add_jugador(jugador: cls_jugador.Jugador):
+    def add_jugador(jugador: Jugador):
         Marcador.jugadores.append(jugador)
         if (len(Marcador.jugadores) == Marcador.num_jugadores):
             return True
@@ -33,7 +33,7 @@ class Marcador:
         Marcador.ronda_actual.append(indice)
 
     @staticmethod
-    def add_puntos(jugador: cls_jugador.Jugador, puntos: int):
+    def add_puntos(jugador: Jugador, puntos: int):
         for item_jugador in Marcador.jugadores:
             if (item_jugador.get_ordinal() == jugador.get_ordinal()):
                 jugador.add_puntos(puntos)

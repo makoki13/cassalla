@@ -1,5 +1,6 @@
 
 import cls_arbitro
+from cls_decision import Decisiones, Decision
 import cls_tablero
 import cls_marcador
 import cls_jugador
@@ -11,6 +12,7 @@ class Partida:
     tablero: cls_tablero.Tablero
     marcador: cls_marcador.Marcador
     ronda_actual: int
+    envido_actual: int
 
     @staticmethod
     def inicializa(tablero: cls_tablero.Tablero, marcador: cls_marcador.Marcador):
@@ -18,6 +20,8 @@ class Partida:
         Partida.tablero = tablero
         Partida.marcador = marcador
         Partida.ronda_actual = 0
+        Partida.envido_actual = Decisiones.SIN_DECISION
+        Partida.truc_actual = Decisiones.SIN_DECISION
 
     # devuelve True si la partida esta completa.
     @staticmethod
