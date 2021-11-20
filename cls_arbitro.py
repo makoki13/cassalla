@@ -37,6 +37,13 @@ class Arbitro:
         esta_completa = Arbitro.partida.add_jugador(jugador)
         if (esta_completa == True):
             print("se inicia la partida")
+
+            lista_jugadores: list[cls_jugador.Jugador]
+            lista_jugadores = Arbitro.partida.get_lista_jugadores()
+            for jugador in lista_jugadores:
+                print(
+                    f'jugador {jugador.get_nombre()} tiene como estrategia {jugador.estrategia.nombre()}')
+
             Arbitro.inicia_jugada()
 
     @staticmethod
@@ -78,7 +85,9 @@ class Arbitro:
 
         # enviar mensaje al jugador en turno de que juegue. El envido es din decision y el truco idem
         decision_tomada = Arbitro.jugador_en_turno.juega(
-            Arbitro.partida.get_ronda_actual(), Decisiones.SIN_DECISION, Decisiones.SIN_DECISION)
+            Arbitro.partida.get_ronda_actual(),
+            Arbitro.partida.set_envido_actual(Decisiones.SIN_DECISION),
+            Arbitro.partida.set_truc_actual(Decisiones.SIN_DECISION))
         Arbitro.recoge_decision(
             decision_tomada.decision, decision_tomada.carta)
 
@@ -89,6 +98,8 @@ class Arbitro:
         # print(decision)
         # print()
 
+        lista_jugadores = Arbitro.partida.get_lista_jugadores()
+
         if (decision == Decisiones.USO_CARTA):
             print(f'{Arbitro.jugador_en_turno.get_nombre()} usa {carta.get_nombre()}')
             ronda = cls_ronda.Ronda()
@@ -97,7 +108,6 @@ class Arbitro:
 
             Arbitro.partida.add_ronda(ronda)
 
-            lista_jugadores = Arbitro.partida.get_lista_jugadores()
             if (Arbitro.indice_jugador_en_turno + 1 == len(lista_jugadores)):
                 # terminamos la ronda
                 Arbitro.evalua_jugada()
@@ -107,21 +117,41 @@ class Arbitro:
                     lista_jugadores[Arbitro.indice_jugador_en_turno], Arbitro.indice_jugador_en_turno)
                 # TODO hay que enviar el estado del truc y del envido. Implementar sendas funciones en clase Partida
                 decision_tomada = Arbitro.jugador_en_turno.juega(
-                    Arbitro.partida.get_ronda_actual())
+                    Arbitro.partida.get_ronda_actual(),
+                    Arbitro.partida.set_envido_actual(
+                        Arbitro.partida.get_envido_actual()),
+                    Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))
                 Arbitro.recoge_decision(
                     decision_tomada.decision, decision_tomada.carta)
 
         # solo se puede envidar en la primera ronda
         # TODO poner un contador de puntos de envido y otro de truc
         elif decision == Decisiones.ENVIDO:
+            Arbitro.partida.set_envido_actual(decision)
+            Arbitro.partida.set_jugador_envida(
+                lista_jugadores[Arbitro.indice_jugador_en_turno])
+            decision_tomada = Arbitro.jugador_en_turno.juega(
+                Arbitro.partida.get_ronda_actual(),
+                Arbitro.partida.set_envido_actual(
+                    Arbitro.partida.get_envido_actual()),
+                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))
+            Arbitro.recoge_decision(
+                decision_tomada.decision, decision_tomada.carta)
+
             pass
 
-        elif decision == Decisiones.QUIERO:
+        elif decision == Decisiones.QUIERO_ENVIDO:
+            pass
+
+        elif decision == Decisiones.QUIERO_TRUC:
             pass
 
         # asignamos los puntos en juego al otro jugador
-        elif decision == Decisiones.ME_VOY:
-            pass
+        elif decision == Decisiones.NO_QUIERO_ENVIDO:
+            Arbitro.partida.envia_puntos_envido(
+                Arbitro.partida.get_jugador_truca(),
+                Decisiones.NO_QUIERO_ENVIDO)
+            Arbitro.partida.set_envido_actual(Decisiones.DECISION_YA_TOMADA)
 
     @ staticmethod
     def evalua_jugada():

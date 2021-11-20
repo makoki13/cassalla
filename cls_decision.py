@@ -4,13 +4,15 @@ import cls_carta
 
 
 class Decisiones(Enum):
-    ME_VOY = 0
     USO_CARTA = 1
     ENVIDO = 2
     TORNE_ENVIDO = 3
     LA_FALTA_ENVIDO = 4
     TRUQUE = 5
-    QUIERO = 10
+    QUIERO_ENVIDO = 10
+    QUIERO_TRUC = 11
+    NO_QUIERO_ENVIDO = 20
+    NO_QUIERO_TRUC = 21
     SIN_DECISION = -1
     DECISION_YA_TOMADA = -2
 

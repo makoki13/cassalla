@@ -41,15 +41,26 @@ class Jugador:
         #print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')
         if (ronda == 1):
             # evaluamos la ronda
-            self.estrategia.analiza_envido(tipo_envido)
-            pass
-        decision = Decisiones.USO_CARTA
-        carta_a_enviar = None
-        for carta in self.ronda.get_cartas():
-            if carta.estado == cls_estados_carta.Estados.EN_MANO:
-                carta_a_enviar = carta
-                carta.estado = cls_estados_carta.Estados.EN_TABLERO
-                break
+            decision = self.estrategia.analiza_envido(tipo_envido)
+            if (decision == Decisiones.SIN_DECISION):
+                decision = Decisiones.USO_CARTA
+                carta_a_enviar = None
+                for carta in self.ronda.get_cartas():
+                    if carta.estado == cls_estados_carta.Estados.EN_MANO:
+                        carta_a_enviar = carta
+                        carta.estado = cls_estados_carta.Estados.EN_TABLERO
+                        break
+            else:
+                pass
+        else:
+            # TODO este codigo y el de arriba hay que pasarlo a funcion
+            decision = Decisiones.USO_CARTA
+            carta_a_enviar = None
+            for carta in self.ronda.get_cartas():
+                if carta.estado == cls_estados_carta.Estados.EN_MANO:
+                    carta_a_enviar = carta
+                    carta.estado = cls_estados_carta.Estados.EN_TABLERO
+                    break
 
         return Decision(decision, carta_a_enviar.carta)
         #cls_arbitro.Arbitro.recoge_decision(decision, carta_a_enviar.carta)

@@ -5,6 +5,7 @@ import cls_tablero
 import cls_marcador
 import cls_jugador
 import cls_ronda
+from cls_puntos import Puntos
 
 
 class Partida:
@@ -22,6 +23,8 @@ class Partida:
         Partida.ronda_actual = 0
         Partida.envido_actual = Decisiones.SIN_DECISION
         Partida.truc_actual = Decisiones.SIN_DECISION
+        Partida.jugador_envida = None
+        Partida.jugador_truca = None
 
     # devuelve True si la partida esta completa.
     @staticmethod
@@ -72,3 +75,41 @@ class Partida:
     @staticmethod
     def get_ganador():
         return Partida.marcador.get_ganador()
+
+    @staticmethod
+    def get_envido_actual():
+        return Partida.envido_actual
+
+    @staticmethod
+    def set_envido_actual(decision: Decisiones):
+        Partida.envido_actual = decision
+
+    @staticmethod
+    def get_truc_actual():
+        return Partida.truc_actual
+
+    @staticmethod
+    def set_truc_actual(decision: Decisiones):
+        Partida.truc_actual = decision
+
+    @staticmethod
+    def get_jugador_truca():
+        return Partida.jugador_truca
+
+    @staticmethod
+    def set_jugador_truca(jugador: cls_jugador.Jugador):
+        Partida.jugador_truca = jugador
+
+    @staticmethod
+    def get_jugador_envida():
+        return Partida.jugador_envida
+
+    @staticmethod
+    def set_jugador_envida(jugador: cls_jugador.Jugador):
+        Partida.jugador_envida = jugador
+
+    @staticmethod
+    def envia_puntos_envido(jugador: cls_jugador.Jugador, decision: Decisiones):
+        puntos = Puntos.get_puntos_envido(Partida.get_envido_actual, decision)
+        Partida.add_puntos(jugador, puntos)
+        pass
