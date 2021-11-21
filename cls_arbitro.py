@@ -88,6 +88,7 @@ class Arbitro:
             Arbitro.partida.get_ronda_actual(),
             Arbitro.partida.set_envido_actual(Decisiones.SIN_DECISION),
             Arbitro.partida.set_truc_actual(Decisiones.SIN_DECISION))
+        print(decision_tomada.decision)        
         Arbitro.recoge_decision(
             decision_tomada.decision, decision_tomada.carta)
 
@@ -130,11 +131,20 @@ class Arbitro:
             Arbitro.partida.set_envido_actual(decision)
             Arbitro.partida.set_jugador_envida(
                 lista_jugadores[Arbitro.indice_jugador_en_turno])
+            Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
+            Arbitro.set_jugador_en_turno(lista_jugadores[Arbitro.indice_jugador_en_turno],Arbitro.indice_jugador_en_turno)
+
+            print(f'responde al envido {Arbitro.jugador_en_turno.get_nombre()}')
+            exit()
+            
             decision_tomada = Arbitro.jugador_en_turno.juega(
                 Arbitro.partida.get_ronda_actual(),
                 Arbitro.partida.set_envido_actual(
                     Arbitro.partida.get_envido_actual()),
                 Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))
+
+            exit()
+
             Arbitro.recoge_decision(
                 decision_tomada.decision, decision_tomada.carta)
 

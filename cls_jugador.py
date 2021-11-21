@@ -4,6 +4,7 @@ import cls_ronda
 #import cls_arbitro
 import cls_estados_carta
 import lista_estrategias
+from cls_carta_en_juego import Carta_en_juego
 
 
 class Jugador:
@@ -12,7 +13,8 @@ class Jugador:
         self.ordinal = ordinal
         self.ronda = None
         self.puntos = 0
-        self.estrategia = lista_estrategias.get_estrategia_a_reu()
+        #self.estrategia = lista_estrategias.get_estrategia_a_reu()
+        self.estrategia = lista_estrategias.get_estrategia_siempre_si_envido()
 
     def add_ronda(self, ronda: cls_ronda.Ronda):
         self.ronda = ronda
@@ -38,10 +40,11 @@ class Jugador:
 
     # En esta funcion se debe de implementar la inteligencia del jugador
     def juega(self, ronda, tipo_envido: Decisiones, tipo_truc: Decisiones):
-        #print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')
+        print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')        
         if (ronda == 1):
-            # evaluamos la ronda
-            decision = self.estrategia.analiza_envido(tipo_envido)
+            # evaluamos la ronda       
+            carta_a_enviar = Carta_en_juego(None,None)
+            decision = self.estrategia.analiza_envido(tipo_envido)            
             if (decision == Decisiones.SIN_DECISION):
                 decision = Decisiones.USO_CARTA
                 carta_a_enviar = None
@@ -49,7 +52,7 @@ class Jugador:
                     if carta.estado == cls_estados_carta.Estados.EN_MANO:
                         carta_a_enviar = carta
                         carta.estado = cls_estados_carta.Estados.EN_TABLERO
-                        break
+                        break            
             else:
                 pass
         else:

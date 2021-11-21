@@ -10,6 +10,8 @@ class Estrategia_siempre_si(cls_estrategia.Abstract_estrategia):
     def analiza_envido(self, tipo_envido: Decisiones):
         if (tipo_envido == Decisiones.ENVIDO) or (tipo_envido == Decisiones.TORNE_ENVIDO) or (tipo_envido == Decisiones.LA_FALTA_ENVIDO):
             decision = Decisiones.QUIERO
+        elif tipo_envido == None:
+            decision = Decisiones.ENVIDO
         else:
             decision = Decisiones.SIN_DECISION
         return decision

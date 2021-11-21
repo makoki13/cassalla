@@ -20,3 +20,6 @@ def inicializa():
 
 def get_estrategia_a_reu():
     return estrategias[random.randint(0, len(estrategias)-1)]
+
+def get_estrategia_siempre_si_envido():
+    return cls_estrategia_siempre_si.Estrategia_siempre_si()
