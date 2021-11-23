@@ -1,6 +1,8 @@
 import cls_estrategia
 from cls_decision import Decisiones
 
+# Estrategia de pruebas; siempre dice si
+
 
 class Estrategia_siempre_si(cls_estrategia.Abstract_estrategia):
 
