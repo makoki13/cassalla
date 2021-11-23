@@ -141,13 +141,13 @@ class Arbitro:
             Arbitro.partida.set_jugador_envida(
                 lista_jugadores[Arbitro.indice_jugador_en_turno])
             
-            if Arbitro.indice_jugador_en_turno +1 == Arbitro.partida.tablero.num_jugadores:
-                for jugador in lista_jugadores:
-                    print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
-                resultado = Reglas.evalua_envido(lista_jugadores)                
-                puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO_ENVIDO,Decisiones.ENVIDO)
-                print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
-                exit()
+            # if Arbitro.indice_jugador_en_turno +1 == Arbitro.partida.tablero.num_jugadores:
+            #     for jugador in lista_jugadores:
+            #         print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+            #     resultado = Reglas.evalua_envido(lista_jugadores)                
+            #     puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO_ENVIDO,Decisiones.ENVIDO)
+            #     print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            #     exit()
 
             Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
             Arbitro.set_jugador_en_turno(lista_jugadores[Arbitro.indice_jugador_en_turno],Arbitro.indice_jugador_en_turno)
@@ -156,9 +156,12 @@ class Arbitro:
                         
             decision_tomada = Arbitro.jugador_en_turno.juega(
                 Arbitro.partida.get_ronda_actual(),
-                Arbitro.partida.set_envido_actual(
-                    Arbitro.partida.get_envido_actual()),
-                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))            
+                Decisiones.ENVIDO,
+                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))
+
+            #print(f'{decision_tomada.decision} tomada por {lista_jugadores[Arbitro.indice_jugador_en_turno].get_nombre()}')
+            #exit();
+            
             Arbitro.recoge_decision(
                 decision_tomada.decision, decision_tomada.carta)
 
@@ -166,18 +169,68 @@ class Arbitro:
 
             pass
 
-        elif decision == Decisiones.QUIERO_ENVIDO:
+        elif decision == Decisiones.NO_QUIERO_ENVIDO:
+            puntos_del_envido = Puntos.get_puntos_envido(Decisiones.NO_QUIERO,Decisiones.ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
+            jugador = Arbitro.partida.get_jugador_envida()
+            print(f'{jugador.get_nombre()} ha ganado el envido al abandonar {lista_jugadores[Arbitro.indice_jugador_en_turno].get_nombre()}: Se lleva {puntos_del_envido} puntos')
             pass
+
+        elif decision == Decisiones.QUIERO_ENVIDO:
+            #Arbitro.partida.set_envido_actual(decision)
+            Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #for jugador in lista_jugadores:
+            #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+            resultado = Reglas.evalua_envido(lista_jugadores)                
+            puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO,Decisiones.ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
+            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            
+            exit()
+            pass
+
+        elif decision == Decisiones.TORNE_ENVIDO:
+            print(f'responde al envido {Arbitro.jugador_en_turno.get_nombre()} con un torne envido')
+                        
+            decision_tomada = Arbitro.jugador_en_turno.juega(
+                Arbitro.partida.get_ronda_actual(),
+                Decisiones.TORNE_ENVIDO,
+                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))            
+            Arbitro.recoge_decision(
+                decision_tomada.decision, decision_tomada.carta)
+
+            #print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            pass
+
+        elif decision == Decisiones.QUIERO_TORNE_ENVIDO:
+            #Arbitro.partida.set_envido_actual(decision)
+            Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #for jugador in lista_jugadores:
+            #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+            resultado = Reglas.evalua_envido(lista_jugadores)                
+            puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO,Decisiones.TORNE_ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
+            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            
+            exit()
+            pass
+
+        elif decision == Decisiones.NO_QUIERO_TORNE_ENVIDO:
+            #Arbitro.partida.set_envido_actual(decision)
+            Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #for jugador in lista_jugadores:
+            #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+            resultado = Reglas.evalua_envido(lista_jugadores)                
+            puntos_del_envido = Puntos.get_puntos_envido(Decisiones.NO_QUIERO,Decisiones.TORNE_ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
+            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            
+            exit()
+            pass
+
+
+
+
 
         elif decision == Decisiones.QUIERO_TRUC:
             pass
 
-        # asignamos los puntos en juego al otro jugador
-        elif decision == Decisiones.NO_QUIERO_ENVIDO:
-            Arbitro.partida.envia_puntos_envido(
-                Arbitro.partida.get_jugador_truca(),
-                Decisiones.NO_QUIERO_ENVIDO)
-            Arbitro.partida.set_envido_actual(Decisiones.DECISION_YA_TOMADA)
 
     @ staticmethod
     def evalua_jugada():

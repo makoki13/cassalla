@@ -42,11 +42,12 @@ class Jugador:
 
     # En esta funcion se debe de implementar la inteligencia del jugador
     def juega(self, ronda, tipo_envido: Decisiones, tipo_truc: Decisiones):
-        #print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')        
+        print(f'jugador {self.get_nombre()} juega en la ronda {ronda} con un tipo de envido de {tipo_envido}')        
         if (ronda == 1):
             # evaluamos la ronda       
             carta_a_enviar = Carta_en_juego(None,None)
-            decision = self.estrategia.analiza_envido(tipo_envido)            
+            decision = self.estrategia.analiza_envido(tipo_envido)         
+            print(f'se ha tomado la decision de {decision}')   
             if (decision == Decisiones.SIN_DECISION):
                 decision = Decisiones.USO_CARTA
                 carta_a_enviar = None
