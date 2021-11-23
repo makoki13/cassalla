@@ -25,6 +25,7 @@ class Partida:
         Partida.truc_actual = Decisiones.SIN_DECISION
         Partida.jugador_envida = None
         Partida.jugador_truca = None
+        Partida.lista_jugadores_jugada = None
 
     # devuelve True si la partida esta completa.
     @staticmethod
@@ -34,6 +35,13 @@ class Partida:
     @staticmethod
     def get_lista_jugadores():
         return Partida.marcador.get_lista_jugadores()
+
+    # TODO implementar la lista de jugadores según turno en el juego
+    def reordena_lista_jugadores():
+        Partida.lista_jugadores_jugada = Partida.get_lista_jugadores()
+
+    def get_lista_jugadores_jugada():
+        return Partida.lista_jugadores_jugada
 
     @staticmethod
     def inicializa_ronda():
@@ -107,6 +115,7 @@ class Partida:
     @staticmethod
     def set_jugador_envida(jugador: cls_jugador.Jugador):
         Partida.jugador_envida = jugador
+        jugador.set_decision_envido(Decisiones.ENVIDO)
 
     @staticmethod
     def envia_puntos_envido(jugador: cls_jugador.Jugador, decision: Decisiones):

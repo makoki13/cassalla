@@ -4,9 +4,11 @@ import cls_partida
 import cls_carta
 from cls_decision import Decisiones, Decision
 import cls_baraja_safor
+from cls_puntos import Puntos
 import cls_ronda
 import cls_estados_carta
 import cls_carta_en_juego
+from cls_reglas import Reglas
 
 
 class Arbitro:
@@ -23,6 +25,7 @@ class Arbitro:
     def set_jugador_en_turno(jugador: cls_jugador.Jugador, indice: int):
         Arbitro.jugador_en_turno = jugador
         Arbitro.indice_jugador_en_turno = indice
+        print(f'turno para {Arbitro.jugador_en_turno.get_nombre()}')
 
     @staticmethod
     def get_jugador_en_turno():
@@ -53,11 +56,15 @@ class Arbitro:
         print()
 
         # repartir cartas a los jugadores
-        lista_jugadores: list[cls_jugador.Jugador]
-        lista_jugadores = Arbitro.partida.get_lista_jugadores()
+        
+        Arbitro.partida.reordena_lista_jugadores()
+        lista_jugadores: list[cls_jugador.Jugador]        
+        lista_jugadores = Arbitro.partida.get_lista_jugadores_jugada()
+        # TODO hay que reordenar en otra lista la lista de jugadores segun su orden de turno en la jugada
+
+
         for jugador in lista_jugadores:
-            ronda = cls_ronda.Ronda()
-            # TODO Que no se repitan las cartas :-D
+            ronda = cls_ronda.Ronda()            
             for i in range(0, 3):
                 carta = Arbitro.baraja.get_carta_aleatoria()
                 estado = cls_estados_carta.Estados.EN_MANO
@@ -75,20 +82,21 @@ class Arbitro:
         decision_tomada: Decision
         # TODO hay que poner un contador de ronda actual
 
+        print(f'comienza la ronda {Arbitro.partida.get_ronda_actual() + 1}')
         Arbitro.partida.inicializa_ronda()
 
-        # asigna jugador en turno al primero
-        lista_jugadores: list[cls_jugador.Jugador]
-        lista_jugadores = Arbitro.partida.get_lista_jugadores()
-        Arbitro.set_jugador_en_turno(lista_jugadores[0], 0)
+        # asigna jugador en turno al primero        
+        lista_jugadores: list[cls_jugador.Jugador]        
+        lista_jugadores = Arbitro.partida.get_lista_jugadores_jugada()
+        Arbitro.set_jugador_en_turno(lista_jugadores[0],0)
+        #Arbitro.jugador_en_turno = lista_jugadores[0]
         # print(f'jugador primero: {Arbitro.get_jugador_en_turno().get_nombre()}')
 
         # enviar mensaje al jugador en turno de que juegue. El envido es din decision y el truco idem
         decision_tomada = Arbitro.jugador_en_turno.juega(
             Arbitro.partida.get_ronda_actual(),
             Arbitro.partida.set_envido_actual(Decisiones.SIN_DECISION),
-            Arbitro.partida.set_truc_actual(Decisiones.SIN_DECISION))
-        print(decision_tomada.decision)        
+            Arbitro.partida.set_truc_actual(Decisiones.SIN_DECISION))        
         Arbitro.recoge_decision(
             decision_tomada.decision, decision_tomada.carta)
 
@@ -98,8 +106,9 @@ class Arbitro:
         #print(f'juega {Arbitro.jugador_en_turno.get_nombre()}')
         # print(decision)
         # print()
+        print(f'{Arbitro.get_jugador_en_turno().get_nombre()} ha elegido {decision}')        
 
-        lista_jugadores = Arbitro.partida.get_lista_jugadores()
+        lista_jugadores = Arbitro.partida.get_lista_jugadores_jugada()
 
         if (decision == Decisiones.USO_CARTA):
             print(f'{Arbitro.jugador_en_turno.get_nombre()} usa {carta.get_nombre()}')
@@ -131,22 +140,29 @@ class Arbitro:
             Arbitro.partida.set_envido_actual(decision)
             Arbitro.partida.set_jugador_envida(
                 lista_jugadores[Arbitro.indice_jugador_en_turno])
+            
+            if Arbitro.indice_jugador_en_turno +1 == Arbitro.partida.tablero.num_jugadores:
+                for jugador in lista_jugadores:
+                    print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+                resultado = Reglas.evalua_envido(lista_jugadores)                
+                puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO_ENVIDO,Decisiones.ENVIDO)
+                print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+                exit()
+
             Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
             Arbitro.set_jugador_en_turno(lista_jugadores[Arbitro.indice_jugador_en_turno],Arbitro.indice_jugador_en_turno)
 
             print(f'responde al envido {Arbitro.jugador_en_turno.get_nombre()}')
-            exit()
-            
+                        
             decision_tomada = Arbitro.jugador_en_turno.juega(
                 Arbitro.partida.get_ronda_actual(),
                 Arbitro.partida.set_envido_actual(
                     Arbitro.partida.get_envido_actual()),
-                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))
-
-            exit()
-
+                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))            
             Arbitro.recoge_decision(
                 decision_tomada.decision, decision_tomada.carta)
+
+            exit()
 
             pass
 

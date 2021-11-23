@@ -15,6 +15,8 @@ class Jugador:
         self.puntos = 0
         #self.estrategia = lista_estrategias.get_estrategia_a_reu()
         self.estrategia = lista_estrategias.get_estrategia_siempre_si_envido()
+        self.decision_envido = None
+        self.decision_truc = None
 
     def add_ronda(self, ronda: cls_ronda.Ronda):
         self.ronda = ronda
@@ -40,7 +42,7 @@ class Jugador:
 
     # En esta funcion se debe de implementar la inteligencia del jugador
     def juega(self, ronda, tipo_envido: Decisiones, tipo_truc: Decisiones):
-        print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')        
+        #print(f'jugador {self.get_nombre()} juega en la ronda {ronda}')        
         if (ronda == 1):
             # evaluamos la ronda       
             carta_a_enviar = Carta_en_juego(None,None)
@@ -70,3 +72,24 @@ class Jugador:
 
     def juego_erroneo(self):
         pass
+
+    def set_decision_envido(self,decision: Decisiones):
+        self.decision_envido = decision
+
+    def get_decision_envido(self):
+        return self.decision_envido
+
+    def set_decision_truc(self,decision: Decisiones):
+        self.decision_truc = decision
+
+    def get_decision_truc(self):
+        return self.decision_truc
+
+    def get_puntos_envido(self):
+        ronda = self.ronda.get_cartas()
+        carta_en_mano: Carta_en_juego
+        puntos_envido = 0
+        for carta_en_mano in ronda:            
+            puntos_envido += carta_en_mano.carta.get_valor_envido()
+            print(f'jugador {self.get_nombre()} tiene carta {carta_en_mano.carta.get_nombre()} acum envido {puntos_envido}')
+        return puntos_envido

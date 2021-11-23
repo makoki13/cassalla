@@ -27,7 +27,8 @@ class Tablero:
 
     @staticmethod
     def print_ronda(indice: int):
-        Tablero.rondas[indice].test()
+        #Tablero.rondas[indice].test()
+        pass
 
     @staticmethod
     def inicializa_ronda_ganada():
