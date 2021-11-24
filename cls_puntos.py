@@ -27,7 +27,7 @@ class Puntos:
                 puntos = 2
             elif tipo_envido == Decisiones.TORNE_ENVIDO:
                 puntos = 4                
-            elif tipo_envido == Decisiones.QUIERO_LA_FALTA:
+            elif tipo_envido == Decisiones.LA_FALTA_ENVIDO:
                 # TODO tratarel tema de la falta
                 puntos = 30
     

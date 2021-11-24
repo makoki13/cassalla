@@ -113,9 +113,9 @@ class Partida:
         return Partida.jugador_envida
 
     @staticmethod
-    def set_jugador_envida(jugador: cls_jugador.Jugador):
+    def set_jugador_envida(jugador: cls_jugador.Jugador, decision: Decision):        
         Partida.jugador_envida = jugador
-        jugador.set_decision_envido(Decisiones.ENVIDO)
+        jugador.set_decision_envido(decision)
 
     @staticmethod
     def envia_puntos_envido(jugador: cls_jugador.Jugador, decision: Decisiones):

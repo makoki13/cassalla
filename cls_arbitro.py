@@ -71,6 +71,7 @@ class Arbitro:
                 ronda.add_carta(
                     cls_carta_en_juego.Carta_en_juego(carta, estado))
             jugador.add_ronda(ronda)
+            Arbitro.partida.set_jugador_envida(jugador,None)
 
         Arbitro.inicia_ronda()
 
@@ -139,7 +140,7 @@ class Arbitro:
         elif decision == Decisiones.ENVIDO:
             Arbitro.partida.set_envido_actual(decision)
             Arbitro.partida.set_jugador_envida(
-                lista_jugadores[Arbitro.indice_jugador_en_turno])
+                lista_jugadores[Arbitro.indice_jugador_en_turno],decision)
             
             # if Arbitro.indice_jugador_en_turno +1 == Arbitro.partida.tablero.num_jugadores:
             #     for jugador in lista_jugadores:
@@ -165,10 +166,6 @@ class Arbitro:
             Arbitro.recoge_decision(
                 decision_tomada.decision, decision_tomada.carta)
 
-            exit()
-
-            pass
-
         elif decision == Decisiones.NO_QUIERO_ENVIDO:
             puntos_del_envido = Puntos.get_puntos_envido(Decisiones.NO_QUIERO,Decisiones.ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
             jugador = Arbitro.partida.get_jugador_envida()
@@ -177,16 +174,13 @@ class Arbitro:
 
         elif decision == Decisiones.QUIERO_ENVIDO:
             #Arbitro.partida.set_envido_actual(decision)
-            Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
             #for jugador in lista_jugadores:
             #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
             resultado = Reglas.evalua_envido(lista_jugadores)                
             puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO,Decisiones.ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
             print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
             
-            exit()
-            pass
-
         elif decision == Decisiones.TORNE_ENVIDO:
             print(f'responde al envido {Arbitro.jugador_en_turno.get_nombre()} con un torne envido')
                         
@@ -198,7 +192,7 @@ class Arbitro:
                 decision_tomada.decision, decision_tomada.carta)
 
             #print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
-            pass
+            #pass
 
         elif decision == Decisiones.QUIERO_TORNE_ENVIDO:
             #Arbitro.partida.set_envido_actual(decision)
@@ -207,24 +201,40 @@ class Arbitro:
             #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
             resultado = Reglas.evalua_envido(lista_jugadores)                
             puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO,Decisiones.TORNE_ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
-            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
-            
-            exit()
-            pass
+            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')            
+            Arbitro.partida.add_puntos(resultado["jugador"],puntos_del_envido)
 
         elif decision == Decisiones.NO_QUIERO_TORNE_ENVIDO:
             #Arbitro.partida.set_envido_actual(decision)
-            Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
             #for jugador in lista_jugadores:
             #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
             resultado = Reglas.evalua_envido(lista_jugadores)                
             puntos_del_envido = Puntos.get_puntos_envido(Decisiones.NO_QUIERO,Decisiones.TORNE_ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
             print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')
+            Arbitro.partida.add_puntos(resultado["jugador"],puntos_del_envido)
             
-            exit()
-            pass
+        elif decision == Decisiones.LA_FALTA_ENVIDO:                        
+            Arbitro.indice_jugador_en_turno = Arbitro.indice_jugador_en_turno + 1
+            Arbitro.set_jugador_en_turno(lista_jugadores[Arbitro.indice_jugador_en_turno],Arbitro.indice_jugador_en_turno)
+            print(f'responde al envido {Arbitro.jugador_en_turno.get_nombre()} con un la falta envido')
+                        
+            decision_tomada = Arbitro.jugador_en_turno.juega(
+                Arbitro.partida.get_ronda_actual(),
+                Decisiones.LA_FALTA_ENVIDO,
+                Arbitro.partida.set_truc_actual(Arbitro.partida.get_truc_actual()))            
+            Arbitro.recoge_decision(
+                decision_tomada.decision, decision_tomada.carta)
 
-
+        elif decision == Decisiones.QUIERO_LA_FALTA:
+            #Arbitro.partida.set_envido_actual(decision)
+            #Arbitro.partida.set_jugador_envida(lista_jugadores[Arbitro.indice_jugador_en_turno])
+            #for jugador in lista_jugadores:
+            #print (f'se evalua la mano de {jugador.get_nombre()} ha decidido {jugador.get_decision_envido()}')
+            resultado = Reglas.evalua_envido(lista_jugadores)                
+            puntos_del_envido = Puntos.get_puntos_envido(Decisiones.QUIERO,Decisiones.LA_FALTA_ENVIDO, lista_jugadores[Arbitro.indice_jugador_en_turno].get_decision_envido())
+            print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')            
+            Arbitro.partida.add_puntos(resultado["jugador"],puntos_del_envido)
 
 
 

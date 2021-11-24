@@ -11,16 +11,18 @@ class Estrategia_siempre_si(cls_estrategia.Abstract_estrategia):
 
     def analiza_envido(self, tipo_envido: Decisiones):
         print(f'tipo envido {tipo_envido}')
-        if (tipo_envido == Decisiones.ENVIDO):
-            return Decisiones.TORNE_ENVIDO
+        if tipo_envido == None:
+            decision = Decisiones.LA_FALTA_ENVIDO
 
-        if (tipo_envido == Decisiones.TORNE_ENVIDO):
-            return Decisiones.QUIERO_TORNE_ENVIDO
+        elif tipo_envido == Decisiones.ENVIDO:
+            return Decisiones.NO_QUIERO_ENVIDO
 
-        if (tipo_envido == Decisiones.ENVIDO) or (tipo_envido == Decisiones.TORNE_ENVIDO) or (tipo_envido == Decisiones.LA_FALTA_ENVIDO):
-            decision = Decisiones.QUIERO_ENVIDO
-        elif tipo_envido == None:
-            decision = Decisiones.ENVIDO
+        elif tipo_envido == Decisiones.TORNE_ENVIDO:
+            return Decisiones.NO_QUIERO_TORNE_ENVIDO
+
+        elif tipo_envido == Decisiones.LA_FALTA_ENVIDO:
+            decision = Decisiones.QUIERO_LA_FALTA
+
         else:
             decision = Decisiones.SIN_DECISION
         return decision
