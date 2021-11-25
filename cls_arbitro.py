@@ -35,7 +35,7 @@ class Arbitro:
 
     # cuando estén los slots de jugadores completos se envia un mensaje al primer jugador para que actue
     @staticmethod
-    def add_jugador(jugador: cls_jugador.Jugador):
+    def add_jugador(jugador: cls_jugador.Jugador):        
         esta_completa: bool
         esta_completa = Arbitro.partida.add_jugador(jugador)
         if (esta_completa == True):
@@ -63,10 +63,13 @@ class Arbitro:
         # TODO hay que reordenar en otra lista la lista de jugadores segun su orden de turno en la jugada
 
 
+        Arbitro.baraja.baraja_cartas()
+
         for jugador in lista_jugadores:
             ronda = cls_ronda.Ronda()            
             for i in range(0, 3):
                 carta = Arbitro.baraja.get_carta_aleatoria()
+                print(f'repartiendo carta {carta.get_nombre()} para {jugador.get_nombre()}')
                 estado = cls_estados_carta.Estados.EN_MANO
                 ronda.add_carta(
                     cls_carta_en_juego.Carta_en_juego(carta, estado))
@@ -236,6 +239,15 @@ class Arbitro:
             print(f'{resultado["jugador"].get_nombre()} ha obtenido envido con {resultado["puntuacion"]}: Se lleva {puntos_del_envido} puntos')            
             Arbitro.partida.add_puntos(resultado["jugador"],puntos_del_envido)
 
+            #al ser envido el turno pasa al jugador mano
+            Arbitro.set_jugador_en_turno(lista_jugadores[0],0)        
+            decision_tomada = Arbitro.jugador_en_turno.juega(
+                Arbitro.partida.get_ronda_actual(),
+                Arbitro.partida.set_envido_actual(Decisiones.DECISION_YA_TOMADA),
+                Arbitro.partida.set_truc_actual(Decisiones.SIN_DECISION))        
+            Arbitro.recoge_decision(
+                decision_tomada.decision, decision_tomada.carta)
+
 
 
         elif decision == Decisiones.QUIERO_TRUC:
@@ -285,6 +297,11 @@ class Arbitro:
             print()
             print(
                 f'¡¡¡ {lista_jugadores[ordinal_ganador-1].get_nombre()} ha ganado la ronda !!!')
+            print('***********************************************************************************************************************************')
+            print('***********************************************************************************************************************************')
+            print('***********************************************************************************************************************************')
+            print()
+            print()
             Arbitro.partida.add_puntos(lista_jugadores[ordinal_ganador-1], 3)
             print()
             lista_jugadores = Arbitro.partida.get_lista_jugadores()

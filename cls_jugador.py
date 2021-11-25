@@ -46,29 +46,49 @@ class Jugador:
         if (ronda == 1):
             # evaluamos la ronda       
             carta_a_enviar = Carta_en_juego(None,None)
-            decision = self.estrategia.analiza_envido(tipo_envido)         
-            print(f'se ha tomado la decision de {decision}')   
-            if (decision == Decisiones.SIN_DECISION):
+            if (tipo_envido != Decisiones.DECISION_YA_TOMADA):
+                decision = self.estrategia.analiza_envido(tipo_envido)         
+                print(f'se ha tomado la decision de {decision}')   
+                if (decision == Decisiones.SIN_DECISION):
+                    decision = Decisiones.USO_CARTA
+                    carta_a_enviar = None
+                    for carta in self.ronda.get_cartas():
+                        if carta.estado == cls_estados_carta.Estados.EN_MANO:
+                            print(f'se mira carta a carta {carta}')
+                            carta_a_enviar = carta.carta
+                            carta.estado = cls_estados_carta.Estados.EN_TABLERO
+                            break            
+                else:
+                    carta_a_enviar  = None
+                    print(f'no se mira carta a carta {decision} con carta {carta_a_enviar}')
+                    pass
+            else:                
                 decision = Decisiones.USO_CARTA
                 carta_a_enviar = None
                 for carta in self.ronda.get_cartas():
+                    print(f'mirando carta {carta.carta.get_nombre()} con estado {carta.estado}')
+                    print()
+                    print()
                     if carta.estado == cls_estados_carta.Estados.EN_MANO:
-                        carta_a_enviar = carta
+                        carta_a_enviar = carta.carta                        
+                        print(f'carta a enviar {carta_a_enviar.get_nombre()}')
                         carta.estado = cls_estados_carta.Estados.EN_TABLERO
                         break            
-            else:
-                pass
+            
         else:
             # TODO este codigo y el de arriba hay que pasarlo a funcion
             decision = Decisiones.USO_CARTA
             carta_a_enviar = None
             for carta in self.ronda.get_cartas():
                 if carta.estado == cls_estados_carta.Estados.EN_MANO:
-                    carta_a_enviar = carta
+                    carta_a_enviar = carta.carta
                     carta.estado = cls_estados_carta.Estados.EN_TABLERO
                     break
 
-        return Decision(decision, carta_a_enviar.carta)
+
+        print(f'enviando carta... {decision}')
+        
+        return Decision(decision, carta_a_enviar)
         #cls_arbitro.Arbitro.recoge_decision(decision, carta_a_enviar.carta)
 
     def juego_erroneo(self):

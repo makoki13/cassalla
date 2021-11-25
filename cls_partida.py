@@ -91,6 +91,7 @@ class Partida:
     @staticmethod
     def set_envido_actual(decision: Decisiones):
         Partida.envido_actual = decision
+        return decision
 
     @staticmethod
     def get_truc_actual():

@@ -34,3 +34,8 @@ class Baraja:
         carta = self.get_carta(random.randint(0, self.num_cartas-1))
         carta.set_usada()
         return carta
+
+    def baraja_cartas(self):
+        for carta in self.cartas:            
+            carta.set_no_usada()
+

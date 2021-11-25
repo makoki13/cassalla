@@ -11,7 +11,7 @@ class Estrategia_siempre_si(cls_estrategia.Abstract_estrategia):
 
     def analiza_envido(self, tipo_envido: Decisiones):
         print(f'tipo envido {tipo_envido}')
-        if tipo_envido == None:
+        if (tipo_envido == None) or (tipo_envido == Decisiones.SIN_DECISION) :
             decision = Decisiones.LA_FALTA_ENVIDO
 
         elif tipo_envido == Decisiones.ENVIDO:
@@ -22,9 +22,7 @@ class Estrategia_siempre_si(cls_estrategia.Abstract_estrategia):
 
         elif tipo_envido == Decisiones.LA_FALTA_ENVIDO:
             decision = Decisiones.QUIERO_LA_FALTA
-
-        else:
-            decision = Decisiones.SIN_DECISION
+            
         return decision
 
 

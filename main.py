@@ -39,6 +39,7 @@ if __name__ == "__main__":
     jugador1 = cls_jugador.Jugador(usuario1, 1)
     cls_arbitro.Arbitro.add_jugador(jugador1)
 
+
     usuario2 = cls_usuario.Usuario(2, 'Saisua')
     jugador2 = cls_jugador.Jugador(usuario2, 2)
     cls_arbitro.Arbitro.add_jugador(jugador2)

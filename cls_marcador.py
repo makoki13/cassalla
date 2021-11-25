@@ -44,6 +44,8 @@ class Marcador:
     def get_ganador():
         for item_jugador in Marcador.jugadores:
             num_piedras = item_jugador.get_puntos()
+            print(f'atencion, jugador {item_jugador.get_nombre()} tiene {num_piedras} para un tope de {Marcador.num_piedras_para_ganar} piedras')
             if (num_piedras >= Marcador.num_piedras_para_ganar):
+                print(f'tenemos ganador!!! {item_jugador.get_nombre()}')
                 return item_jugador
         return None
